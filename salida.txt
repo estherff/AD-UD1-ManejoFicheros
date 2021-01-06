@@ -1,0 +1,3 @@
+trace console 1
+trace console 2
+pepe
