@@ -19,17 +19,31 @@ import java.util.logging.Logger;
  * @author Esther Ferreiro 
  * Se crea un fichero con objetos de tipo Persona y, a continuación, se crea un 
  * documento DOM y un fichero XML a partir de los datos almacenados en el fichero
- * @version 1.1
+ * Se consultan los datos de la clase y propiedades de objetos almacenados en el 
+ * fichero serializado
+ * Se añaden atributos al árbol DOM
+ * 
+ * @version 1.2
  */
-public class CrearDOM_11 {
+public class CrearDOM_111 {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //Se crea un fichero de objetos de tipo Persona
-        Lib_FicheroSerializablePersonas.crearFicheroSerializable("ficheropersonas_11.dat");
 
+
+        //Se crea un fichero de objetos de tipo Persona
+        Lib_FicheroSerializablePersonas.crearFicheroSerializable("ficheropersonas_111.dat");
+        
+        //Para consultar el tipo de objeto almacenado de un fichero de Ojetos y sus propiedades
+        Lib_FicheroSerializablePersonas.mostrarDatosObjetoFicheroSerializable("ficheropersonas_111.dat");
+        
+        /**
+         * *******************************************************************************************
+         */
+        /* Crear árbol DOM a partir de un fichero de objetos y mostrar por pantalla el XML que se genera*/
+        
 
         try {
             //Crear una nueva instancia de una fábrica de constructores de documentos
@@ -49,13 +63,13 @@ public class CrearDOM_11 {
             crearElementoOfFicheroSerializable(documento);
 
             //Crea un fichero XML a partir del documento XML
-            crearFicheroXML(documento, "personas_11.xml");
+            crearFicheroXML(documento, "personas_111.xml");
 
             //Se muestra el documento XML creado en pantalla
             mostrarFicheroXML(documento);
 
         } catch (ParserConfigurationException | TransformerException e) {
-            Logger.getLogger(CrearDOM_11.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(CrearDOM_111.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -109,6 +123,22 @@ public class CrearDOM_11 {
         return elemento;
     }
     
+     /**
+     * Crea un atributo con su valor y lo agrega al elemento que se pasa por parámetro
+     * 
+     * @param elemento Tipo Element Elemento al que se le va añadir un atributo/valor
+     * @param atributo Tipo String Nombre del atributo
+     * @param valor Tipo String Valor del atributo
+     * @param documento Tipo Dcument Árbol DOM que se modifica
+     */
+    static void agregarAtributoElemento(Element elemento, String atributo, String valor, Document documento){
+        //Defino un elemento de tipo Attr (atributo) con el nombre que se pasa por parámetro
+        Attr elAttr=documento.createAttribute(atributo);
+        //Dar valor al atributo recien creado atributo=valor
+        elAttr.setValue(valor);
+        //Enlazo el atributo con su correspondiente elemento
+        elemento.setAttributeNode(elAttr);  
+    }
 
     /**
      * Crea un nuevo elemento con valor de tipo texto que se enlaza a un
@@ -139,26 +169,30 @@ public class CrearDOM_11 {
      * crear a partir de un fichero de objetos
      */
     static void crearElementoOfFicheroSerializable(Document documento) {
-        
         //Definimos un objeto de tipo Persona
         Persona amigo;
+        int i=0; //posición del objeto en el fichero, será un atributo en XML
         //Declaramos o ficheiro.Se non existe, créao.
-        File fichero = new File("ficheropersonas.dat");
+        File fichero = new File("ficheropersonas_111.dat");
         //Creamos un fluxo de entrada: ficheiro -> aplicación
         try (FileInputStream miFIS = new FileInputStream(fichero);
                 ObjectInputStream miOIS = new ObjectInputStream(miFIS);) {
             //Bucle para ler do ficheiro
             //Cando chega ao fin de arquivo amigo é null!!!
             while (true){
+                 i++;
                  amigo = (Persona) miOIS.readObject();
                 //Visualizamos contido do ficheiro
-                System.out.println("Nombre:" + amigo.getNome()
-                        + "  Edad:" + amigo.getIdade());
+                System.out.println("Nombre: " + amigo.getNome()
+                        + "   Edad: " + amigo.getIdade());
                 //Creamos el nodo persona y lo enlazamos al raíz del documento
                 Element elemento = crearElemento("persona", documento);
                 //Agregamos nome e idade
                 crearSubElemento("nombre", amigo.getNome(), elemento, documento);
                 crearSubElemento("edad", String.valueOf(amigo.getIdade()), elemento, documento);
+                //Añadiremos un atributo a cada elemento persona llamado id que contendrá su 
+                //posición en el fichero 
+                agregarAtributoElemento(elemento, "id",String.valueOf(i), documento);
             }
         }catch(EOFException e){
             System.out.println("Se ha alacanzado el fin del fichero serializable");
@@ -167,6 +201,7 @@ public class CrearDOM_11 {
         }
     }
     
+       
    
 
 }

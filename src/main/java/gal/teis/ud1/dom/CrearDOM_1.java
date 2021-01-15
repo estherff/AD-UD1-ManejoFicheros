@@ -17,10 +17,10 @@ import java.util.logging.Logger;
 /**
  *
  * @author Esther Ferreiro
- * Primera aproximación al procesamiento de información XML con DOM
- * Este clase crea un fichero XML utilizando el parser DOM
- * A partir del documento DOM se creará un fichero XML y se verá como mostrar
- * la información del DOM por consola.
+ * @version 1.0 Primera aproximación al procesamiento de información XML con DOM
+ * Este clase crea un fichero XML utilizando el parser DOM A partir del
+ * documento DOM se creará un fichero XML y se verá como mostrar la información
+ * del DOM por consola.
  */
 public class CrearDOM_1 {
 
@@ -28,6 +28,12 @@ public class CrearDOM_1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        /*Valores de los elementos a introducir en el XML*/
+        Integer id;
+        String apellidos;
+        String nombre;
+        Integer dep;
+        Double salario;
 
         try {
             //Crear una nueva instancia de una fábrica de constructores de documentos
@@ -36,29 +42,62 @@ public class CrearDOM_1 {
             DocumentBuilder builderDocument = factoryDocument.newDocumentBuilder();
             //Crear una instancia de DOMImplementation que permite crear documentos DOM
             DOMImplementation implementacionDOM = builderDocument.getDOMImplementation();
+            
+            /**
+             * ****************Crear el documento DOM con su elemento raíz**************************
+             */
             //Crear un documento vacío (document) con el nodo raíz de nombre persoas
-            Document documento = implementacionDOM.createDocument(null, "personas", null);
+            Document documento = implementacionDOM.createDocument(null, "personas_1", null);
             //Asignar la versión de XML 
             documento.setXmlVersion("1.0");
 
+            /**
+             * ****************Añadir primer elemento**************************
+             */
             //Crear un elemento hijo del raíz llamado persona
             Element elemento1 = documento.createElement("persona");
             //Enlazar el elemento raíz al documento creado
             documento.getDocumentElement().appendChild(elemento1);
 
-            //Agregamos nombre y edad y lo enlazamos con elemento1
-            CrearElementoHijoConTexto("nombre", "Ana", elemento1, documento);
-            CrearElementoHijoConTexto("edad", "22", elemento1, documento);
+            //Agregamos id, nombre, edad, apellidos, dep y saladio y lo enlazamos con elemento1
+            //Definimos variables de un tipo concreto para estos elementos
+            //Estas varibles son de tipos concretos que podrían haber sido tomadas de otras fuentes
+            //como una base de datos.
+            id = 1;
+            apellidos = "Pin";
+            nombre = "Ana";
+            dep = 45;
+            salario = 2500.0;
+            //El DOM necesita que todos sus elementos sean convertidos a String
+            crearElementoHijoConTexto("nombre", nombre, elemento1, documento);
+            crearElementoHijoConTexto("apellidos", apellidos, elemento1, documento);
+            crearElementoHijoConTexto("id", id.toString(), elemento1, documento);
+            crearElementoHijoConTexto("dep", dep.toString(), elemento1, documento);
+            crearElementoHijoConTexto("salario", salario.toString(), elemento1, documento);
 
+            /**
+             * ****************Añadir segundo elemento**************************
+             */
             //Crear otro elemento hijo del raíz llamado persona
             Element elemento2 = documento.createElement("persoa");
             //Enlazar el elemento raíz al documento creado
             documento.getDocumentElement().appendChild(elemento2);
 
-            //Agregamos nombre y edad y lo enlazamoa a elemento2
-            CrearElementoHijoConTexto("nombre", "Pedro", elemento2, documento);
-            CrearElementoHijoConTexto("edad", "25", elemento2, documento);
+            id = 2;
+            apellidos = "Rois";
+            nombre = "Pedro";
+            dep = 35;
+            salario = 2200.0;
+            //El DOM necesita que todos sus elementos sean convertidos a String
+            crearElementoHijoConTexto("nombre", nombre, elemento1, documento);
+            crearElementoHijoConTexto("apellidos", apellidos, elemento1, documento);
+            crearElementoHijoConTexto("id", id.toString(), elemento1, documento);
+            crearElementoHijoConTexto("dep", dep.toString(), elemento1, documento);
+            crearElementoHijoConTexto("salario", salario.toString(), elemento1, documento);
 
+            /**
+             * ****************Crear un fichero XML con el contenido del DOM**************************
+             */
             //Crear una fuente a partir del documento DOM
             Source sourceDOM = new DOMSource(documento);
 
@@ -67,6 +106,9 @@ public class CrearDOM_1 {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.transform(sourceDOM, resultado);
 
+            /**
+             * ****************Mostrar el contenido del DOM por pantalla**************************
+             */
             //Mostramos por consola la fuente sourceDOM
             Result consola = new StreamResult(System.out);
             transformer.transform(sourceDOM, consola);
@@ -77,14 +119,15 @@ public class CrearDOM_1 {
     }
 
     /**
-     * Crea un nuevo elemento con valor y lo enlaza a su elemento padre 
-     * en el documento DOM
+     * Crea un nuevo elemento con valor y lo enlaza a su elemento padre en el
+     * documento DOM
+     *
      * @param hijo tipo String, nuevo elemento del DOM
      * @param valor tipo String, valor del nuevo elemento hijo
      * @param padre tipo Element, elemento padre ya existente
-     * @param documento  tipo Document, DOM que se va a modificar
+     * @param documento tipo Document, DOM que se va a modificar
      */
-    static void CrearElementoHijoConTexto(String hijo, String valor,
+    static void crearElementoHijoConTexto(String hijo, String valor,
             Element padre, Document documento) {
         //Crear un nuevo elemento a partir del parámetro hijo
         Element elemento = documento.createElement(hijo);
