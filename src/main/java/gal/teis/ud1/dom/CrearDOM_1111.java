@@ -5,23 +5,26 @@
  */
 package gal.teis.ud1.dom;
 
+import gal.teis.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xml.sax.SAXException;
 
 /**
  *
- * @author Esther Ferreiro Se crea un fichero con objetos de tipo Persona y, a
- * continuación, se crea un documento DOM y un fichero XML a partir de los datos
- * almacenados en el fichero Se consultan los datos de la clase y propiedades de
- * objetos almacenados en el fichero serializado Se añaden atributos al árbol
- * DOM. Después ser recorre el árbol y se muestra por pantalla
+ * Se crea un fichero con objetos de tipo Persona. Se consultan datos del
+ * fichero de objetos como el tipo de objeto y sus propiedades. Se crear un
+ * árbol DOM a partir del ficehro de objetos de tipo Persona Se muestra el árbol
+ * DOM por pantalla con métodos específicos.
+ *
+ * @author Esther Ferreiro
  *
  * @version 1.2
  */
@@ -31,10 +34,14 @@ public class CrearDOM_1111 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+        System.out.println("\n");
+        System.out.println("************************************");
+        System.out.println("SE CREA UN FICHERO DE OJETOS PERSONA");
         //Se crea un fichero de objetos de tipo Persona
         Lib_FicheroSerializablePersonas.crearFicheroSerializable("ficheropersonas_1111.dat");
 
+        System.out.println("*********************************************************************************************************");
+        System.out.println("SE MUESTRA LOS DATOS DE LOS OBJETOS DEL FICHERO, PARA CONOCER LAS CARACTERISTICAS DEL OBJETO QUE ALMACENA");
         //Para consultar el tipo de objeto almacenado de un fichero de Ojetos y sus propiedades
         Lib_FicheroSerializablePersonas.mostrarDatosObjetoFicheroSerializable("ficheropersonas_1111.dat");
 
@@ -43,61 +50,63 @@ public class CrearDOM_1111 {
          */
         /* Crear árbol DOM a partir de un fichero de objetos y mostrar por pantalla el XML que se genera*/
         try {
-            //Crear una nueva instancia de una fábrica de constructores de documentos
-            DocumentBuilderFactory factoryDocument = DocumentBuilderFactory.newInstance();
-            //Crear un parser/procesador de documentos XML
-            DocumentBuilder builderDocument = factoryDocument.newDocumentBuilder();
-            //Crear una instancia de DOMImplementation que permite crear documentos DOM
-            DOMImplementation implementacionDOM = builderDocument.getDOMImplementation();
-            //Creamos un documento vacío (document) con el nodo raíz de nombre "personas"
-            Document documento = implementacionDOM.createDocument(null, "personas", null);
-            //Asignar la versión de XML 
-            documento.setXmlVersion("1.0");
+            /*La clase DocumentBuilderFactory se utiliza para obtener una instancia de la clase DocumentBuilder*/
+            DocumentBuilder builderDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
-            /*Recorremos el fichero con los datos de las personas y por cada registro
-            crearemos un nodo persona con 2 nodos hijos: nome y idade. Cada nodo hijo
+            /*Crear una instancia de DOMImplementation que permite crear documentos DOM
+            Creamos un documento vacío (document) con el nodo raíz de nombre "personas"*/
+            Document documento = builderDocument.getDOMImplementation().createDocument(null, "personas", null);
+
+            documento.setXmlVersion("1.0");//Asignar la versión de XML 
+
+            /*La instancia de Document se puede un árbol DOM en pantalla.
+            A partir de la instancia Document podemos
+            1. Crear un documento DOM
+            2. Crear un fichero XML en el disco.
+            3. Mostrar por pantalla el contenido del árbol DOM en formato XML
+            4. Recorrer el árbol DOM elemento a elemento para su procesamiento (mostrar en pantalla, realizar búsquedas, modificar el árbol, etc.*/
+ /*  1. Crear un documento DOM
+            Recorremos el fichero con los datos de las personas y por cada registro
+            crearemos un nodo node_persona con 2 nodos hijos: nome y idade. Cada nodo hijo
             tendrá un valor*/
             crearElementoOfFicheroSerializable(documento);
 
-            //Crea un fichero XML a partir del documento XML
+            /*2. Crear un fichero XML en el disco.
+            Crea un fichero XML a partir del documento DOM*/
             crearFicheroXML(documento, "personas_1111.xml");
 
-            //Se muestra el documento XML creado en pantalla
+            /*3. Mostrar por pantalla el contenido del árbol DOM en formato XML
+            Se muestra el documento DOM  en pantalla en formato XML*/
             mostrarFicheroXML(documento);
 
-            //Mostrar el árbol DOM por pantalla
-            leerFicheroXMLPersona();
+            /*4. Recorrer el árbol DOM elemento a elemento para su procesamiento 
+                (mostrar en pantalla, realizar búsquedas, modificar el árbol, etc.
+            Leer, recorriendo su estructura el árbol DOM y mostrarlo por pantalla*/
+            leerFicheroXMLPersona(documento);
 
         } catch (ParserConfigurationException | TransformerException e) {
             Logger.getLogger(CrearDOM_1111.class.getName()).log(Level.SEVERE, null, e);
         }
 
-        /* *******************************************************************************************
-        /* Generar un árbol DOM a partir de un fichero XML y recorrerlo*/
-        try {
-            //Crear un parser/procesador de documento XML a partir de una fábrica de constructores de documentos
-            DocumentBuilder factoryDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            // Procesamos el fichero XML y obtenemos nuestro objeto Document  
-//Document    Document documento = documentBuilder.parse(new InputSource(new FileInputStream("/ruta_a_fichero/fichero.xml")));  
-        } catch (Exception e) {
-            Logger.getLogger(CrearDOM_1111.class.getName()).log(Level.SEVERE, null, e);
-        }
     }
 
     /**
-     * Crea un fichero XML a partir de la instancia Document que se pasa por
-     * parámetro
+     * Crea un fichero de texto XML a partir de la instancia Document que se
+     * pasa por parámetro
      *
      * @param documento tipo Document, fichero XML en memoria que se modifica
      * @param nombreFichero tipo String, nombre del fichero que se creará
      * @throws TransformerException
      */
     static void crearFicheroXML(Document documento, String nombreFichero) throws TransformerException {
-        //Se crea el fichero XML a partir del documento
+        /*Se determina el elemento Document (árbol DOM) que tiene la información
+        que queremos pasar al fichero de texto xml*/
         Source sourceDOM = new DOMSource(documento);
-        //Se crea el resultado en el fichero Personas.xml
+        /*Se crea un Stream que tiene como destino el fichero de texto XML que se quiere crear
+        a partir del árbol DOM*/
         Result resultadoFichero = new StreamResult(new File(nombreFichero));
-        //Se obtiene un TransformerFactory
+        /*Obtenemos una instancia de la clase Transformer que permitirá pasar el árbol DOM
+        a un fichero XML*/
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         //Se realiza la transformación del documento a fichero
         transformer.transform(sourceDOM, resultadoFichero);
@@ -117,6 +126,9 @@ public class CrearDOM_1111 {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         //Mostramos el fichero en pantalla
         Result resultadoConsola = new StreamResult(System.out);
+        System.out.println("\n\n");
+        System.out.println("*****************************************************************************");
+        System.out.println("Contenido del árbol DOM creado automáticamente para ser mostrado por pantalla");
         transformer.transform(sourceDOM, resultadoConsola);
     }
 
@@ -160,7 +172,7 @@ public class CrearDOM_1111 {
      * @param hijo tipo String, nombre del nuevo elemento hijo
      * @param valor tipo String, valor del elemento hijo
      * @param padre tipo Element, elemento padre del nuevo elemento hjo
-     * @param documento tipo Document, fichero XML en memoria que se modifica
+     * @param documento tipo Document, tipo Document, árbol DOM que se modifica
      */
     static void crearSubElemento(String hijo, String valor,
             Element padre, Document documento) {
@@ -175,46 +187,133 @@ public class CrearDOM_1111 {
     }
 
     /**
-     * Recorre el árbol DOM y lo muestra por pantalla
+     * Parsea un documento XML contenido en un fichero *.xml y crea un árbol DOM
+     * en memoria. Recorre la estructura de un árbol DOM en memoria y muestra su
+     * estructura y contenido por pantalla
+     *
+     * @param documento tipo Document, árbol DOM
      */
-    static void leerFicheroXMLPersona() {
-        try {
-            /*Crear el parser DOM
-             */
-            //Crear una nueva instancia de una fábrica de constructores de documentos
-            DocumentBuilderFactory factoryDocument = DocumentBuilderFactory.newInstance();
-            //Crear un parser/procesador de documentos XML
-            DocumentBuilder builderDocument = factoryDocument.newDocumentBuilder();
+    static void leerFicheroXMLPersona(Document documento) {
 
-            //Invocamos el documento XML que se quiere leer
-            Document documento = builderDocument.parse(new File("personas_1111.xml"));
-            documento.getDocumentElement().normalize();
-            System.out.println("");
-            System.out.println("Elemento raíz do documento XML: "
-                    + documento.getDocumentElement().getNodeName());
-            //Crea unha lista con todos los nodos 'persona'
-            NodeList listaPersonas = documento.getElementsByTagName("persona");
-            //Percorremos a lista que acabamos de crear cun bucle for
-            for (int i = 0; i < listaPersonas.getLength(); i++) {
-                Node persona = listaPersonas.item(i);
-                if (persona.getNodeType() == Node.ELEMENT_NODE) {//tipo de nodo
-                    //obter datos do nodo empregado (fillos do pai).
-                    Element elemento = (Element) persona;//obter os elementos do nodo
-                    System.out.println("Nombre : " + getNodo("nome", elemento));
-                    System.out.println("Apelido: " + getNodo("idade", elemento));
+        System.out.println("\n\n");
+        System.out.println("*****************************");
+
+        System.out.println("LECTURA DIRECTA DEL DOCUMENTO DOM. "
+                + "El documento DOM se ha creado directamente a partir"
+                + "de un fichero con el método parse() de DocumentBuilder");
+
+        //Se muestra el elemento raíz del DOM
+        System.out.println("Elemento raíz del documento XML: "
+                + documento.getDocumentElement().getNodeName());
+
+        //documento.getDocumentElement().getno
+        System.out.println();
+
+        //Obtenemos unha lista de nodos con nombre "persona" de todo el documento
+        NodeList listaPersonas = documento.getElementsByTagName("persona");
+
+        //Mostramos el nº de nodos llamados "persona" que existen en el DOM (documento)
+        System.out.println("El nº de elementos de tipo persona en el DOM es " + listaPersonas.getLength());
+
+        /**
+         * ******Recorrer la lista conociendo los
+         * tags*****************************
+         */
+        /*Una vez tenemos almacenados los datos del nodo “persona” en listaPersonas
+            podemos leer su contenido teniendo en cuenta que este código depende de que 
+            conozcamos la estructura y etiquetas utilizadas.*/
+        for (int i = 0; i < listaPersonas.getLength(); i++) { //Recorrer la lista de elementos listaPersonas 
+
+            //Extraemos el elemento i de la lista de nodos creada
+            Node node_persona = listaPersonas.item(i);
+
+            if (node_persona.getNodeType() == Node.ELEMENT_NODE) {//tipo de nodo
+                //Obtener los datos del nodo "node_persona".
+                Element elemento = (Element) node_persona;//obter os elementos do nodo
+                System.out.println("El contenido del atributo id del elemento es " + elemento.getAttribute("id"));
+                System.out.println("Nombre : " + elemento.getElementsByTagName("nombre").item(0).getTextContent());
+                System.out.println("Edad: " + elemento.getElementsByTagName("edad").item(0).getTextContent());
+                System.out.println();
+            }
+        }
+
+        /**
+         * ******Recorrer la lista SIN CONOCER los tags, sabiendo los niveles
+         * existentes*********************
+         */
+        /*En el caso de no conocer la estructura del documento DOM, se 
+            recorrería el árbol de la siguiente forma*/
+        for (int i = 0; i < listaPersonas.getLength(); i++) {
+            //Extraer un nodo de la lista para consultar sus hijos
+            Node elNodo = listaPersonas.item(i);
+
+            //Si el elemento que se ha extraido es tip NODE
+            if (elNodo.getNodeType() == Node.ELEMENT_NODE) {
+                Element elElement = (Element) elNodo;
+
+                if (elElement.hasAttributes()) {
+                    NamedNodeMap miListaAtributos = elNodo.getAttributes();
+                    for (int j = 0; j < miListaAtributos.getLength(); j++) {
+                        System.out.println("El atributo es " + miListaAtributos.item(j).getNodeName()
+                                + " y su contenido: " + miListaAtributos.item(j).getNodeValue());
+                    }
+                }
+                //Analizamos si tiene hijos y mostramos su contenido
+                if (elElement.hasChildNodes()) {
+                    NodeList elNodeList = elNodo.getChildNodes();
+                    for (int j = 0; j < elNodeList.getLength(); j++) {
+                        Node elNode = elNodeList.item(j);
+                        //Mostrar el tag del nodo y su valor
+                        System.out.println(elNode.getNodeName() + ": " + elNode.getTextContent());
+                        /* Hay otra forma de acceder al texto de una etiqueta
+                             teniendo en cuenta de que el texto es también un hijo del elemento
+                            System.out.println(elNode.getFirstChild().getNodeValue());*/
+                    }
                 }
             }
-        } catch (ParserConfigurationException | IOException | SAXException ex) {
-            Logger.getLogger(CrearDOM_1111.class.getName()).log(Level.SEVERE, null, ex);
         }
+        /**
+         * ******Recorrer la lista SIN CONOCER los tags NI LOS NIVELES
+         * existentes*********************
+         */
+        System.out.println("Acceso recursivo");
+        tratarNodoRecursivo(documento, "");
     }
 
-    //Obtén valor dun nodo se lle pasamos certa información
-    private static String getNodo(String etiqueta, Element elem) {
-        NodeList nodo = elem.getElementsByTagName(etiqueta).item(0).getChildNodes();
-        Node valorNodo = (Node) nodo.item(0);
-        //Devolve valor do nodo
-        return valorNodo.getNodeValue();
+    /**
+     * Recorre el árbol DOM de forma recursiva, a partir del elemento raíz
+     * 
+     * @param nodo Tipo Node, nodo del DOM a tratar
+     * @param ind Tipo String, determina la indentación de la salida por pantalla
+     */
+    public static void tratarNodoRecursivo(Node nodo, String ind) {
+        switch (nodo.getNodeType()) {
+            case Node.DOCUMENT_NODE:
+                System.out.println("<xml version=\"1.0\">");
+                Document doc = (Document) nodo;
+                tratarNodoRecursivo(doc.getDocumentElement(), "");
+                break;
+
+            case Node.ELEMENT_NODE:
+                String nombre = nodo.getNodeName();
+                System.out.print(ind + "<" + nombre);
+                NamedNodeMap ats = nodo.getAttributes();
+                for (int i = 0; i < ats.getLength(); i++) {
+                    tratarNodoRecursivo(ats.item(i), "");
+                }
+                System.out.println(">");
+                NodeList hijos = nodo.getChildNodes();
+                if (hijos != null) {
+                    for (int i = 0; i < hijos.getLength(); i++) {
+                        tratarNodoRecursivo(hijos.item(i), ind + "   ");
+                    }
+                }
+                System.out.println(ind + "</" + nombre + ">");
+                break;
+            case Node.TEXT_NODE:
+                String texto = nodo.getTextContent();
+                System.out.println("        " + texto);
+        }
     }
 
     /**
@@ -245,12 +344,12 @@ public class CrearDOM_1111 {
                 //Visualizamos contido do ficheiro
                 System.out.println("Nombre: " + amigo.getNome()
                         + "   Edad: " + amigo.getIdade());
-                //Creamos el nodo persona y lo enlazamos al raíz del documento
+                //Creamos el nodo node_persona y lo enlazamos al raíz del documento
                 Element elemento = crearElemento("persona", documento);
                 //Agregamos nome e idade
                 crearSubElemento(prop1, amigo.getNome(), elemento, documento);
                 crearSubElemento(prop2, String.valueOf(amigo.getIdade()), elemento, documento);
-                //Añadiremos un atributo a cada elemento persona llamado id que contendrá su 
+                //Añadiremos un atributo a cada elemento node_persona llamado id que contendrá su 
                 //posición en el fichero 
                 agregarAtributoElemento(elemento, "id", String.valueOf(i), documento);
             }
