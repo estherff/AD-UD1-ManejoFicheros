@@ -98,12 +98,16 @@ public class CrearDOM_1 {
             /**
              * ****************Crear un fichero XML con el contenido del DOM**************************
              */
-            //Crear una fuente a partir del documento DOM
+            /*Se determina el elemento Document (árbol DOM) que tiene la información
+             que queremos pasar al fichero de texto xml*/
             Source sourceDOM = new DOMSource(documento);
-
-            //Crear el fichero XML "personas.xml" a partir sourceDOM
+            /*Se crea un Stream que tiene como destino el fichero de texto XML que se quiere crear
+            a partir del árbol DOM*/
             Result resultado = new StreamResult(new File("personas.xml"));
+            /*Obtenemos una instancia de la clase Transformer que permitirá pasar el árbol DOM
+            a un fichero XML*/
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            //Se realiza la transformación del documento a fichero
             transformer.transform(sourceDOM, resultado);
 
             /**

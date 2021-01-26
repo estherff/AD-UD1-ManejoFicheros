@@ -5,7 +5,6 @@
  */
 package gal.teis.ud1.dom;
 
-import gal.teis.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -34,16 +33,21 @@ public class CrearDOM_1111 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
+        File elFicheroObjetos = null; //para almacenar la instancia del fichero serializado de objetos
+
         System.out.println("\n");
         System.out.println("************************************");
         System.out.println("SE CREA UN FICHERO DE OJETOS PERSONA");
+
         //Se crea un fichero de objetos de tipo Persona
-        Lib_FicheroSerializablePersonas.crearFicheroSerializable("ficheropersonas_1111.dat");
+        elFicheroObjetos = Lib_FicheroSerializablePersonas.crearFicheroSerializable("ficheropersonas_1111.dat");
 
         System.out.println("*********************************************************************************************************");
         System.out.println("SE MUESTRA LOS DATOS DE LOS OBJETOS DEL FICHERO, PARA CONOCER LAS CARACTERISTICAS DEL OBJETO QUE ALMACENA");
-        //Para consultar el tipo de objeto almacenado de un fichero de Ojetos y sus propiedades
-        Lib_FicheroSerializablePersonas.mostrarDatosObjetoFicheroSerializable("ficheropersonas_1111.dat");
+
+//Para consultar el tipo de objeto almacenado de un fichero de Ojetos y sus propiedades
+        Lib_FicheroSerializablePersonas.mostrarDatosObjetoFicheroSerializable(elFicheroObjetos);
 
         /**
          * *******************************************************************************************
@@ -69,7 +73,7 @@ public class CrearDOM_1111 {
             Recorremos el fichero con los datos de las personas y por cada registro
             crearemos un nodo node_persona con 2 nodos hijos: nome y idade. Cada nodo hijo
             tendrá un valor*/
-            crearElementoOfFicheroSerializable(documento);
+            crearDOMofFicheroSerializado(documento);
 
             /*2. Crear un fichero XML en el disco.
             Crea un fichero XML a partir del documento DOM*/
@@ -77,12 +81,12 @@ public class CrearDOM_1111 {
 
             /*3. Mostrar por pantalla el contenido del árbol DOM en formato XML
             Se muestra el documento DOM  en pantalla en formato XML*/
-            mostrarFicheroXML(documento);
+            mostrarDOM_Stream(documento);
 
             /*4. Recorrer el árbol DOM elemento a elemento para su procesamiento 
                 (mostrar en pantalla, realizar búsquedas, modificar el árbol, etc.
             Leer, recorriendo su estructura el árbol DOM y mostrarlo por pantalla*/
-            leerFicheroXMLPersona(documento);
+            mostrarDOM_RecorriendoNodos(documento);
 
         } catch (ParserConfigurationException | TransformerException e) {
             Logger.getLogger(CrearDOM_1111.class.getName()).log(Level.SEVERE, null, e);
@@ -119,7 +123,7 @@ public class CrearDOM_1111 {
      * @param documento tipo Document, fichero XML en memoria que se modifica
      * @throws TransformerException
      */
-    static void mostrarFicheroXML(Document documento) throws TransformerException {
+    static void mostrarDOM_Stream(Document documento) throws TransformerException {
         //Se crea el fichero XML a partir del documento
         Source sourceDOM = new DOMSource(documento);
         //Se obtiene un TransformerFactory
@@ -193,7 +197,7 @@ public class CrearDOM_1111 {
      *
      * @param documento tipo Document, árbol DOM
      */
-    static void leerFicheroXMLPersona(Document documento) {
+    static void mostrarDOM_RecorriendoNodos(Document documento) {
 
         System.out.println("\n\n");
         System.out.println("*****************************");
@@ -282,9 +286,10 @@ public class CrearDOM_1111 {
 
     /**
      * Recorre el árbol DOM de forma recursiva, a partir del elemento raíz
-     * 
+     *
      * @param nodo Tipo Node, nodo del DOM a tratar
-     * @param ind Tipo String, determina la indentación de la salida por pantalla
+     * @param ind Tipo String, determina la indentación de la salida por
+     * pantalla
      */
     public static void tratarNodoRecursivo(Node nodo, String ind) {
         switch (nodo.getNodeType()) {
@@ -323,7 +328,7 @@ public class CrearDOM_1111 {
      * @param documento tipo Document, representa el documento DOM que se va a
      * crear a partir de un fichero de objetos
      */
-    static void crearElementoOfFicheroSerializable(Document documento) {
+    static void crearDOMofFicheroSerializado(Document documento) {
         //nombres de las propiedades del objeto Persona
         String prop1 = "nombre";
         String prop2 = "edad";

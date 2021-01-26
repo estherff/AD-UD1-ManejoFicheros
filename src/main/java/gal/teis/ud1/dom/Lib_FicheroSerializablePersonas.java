@@ -22,9 +22,10 @@ import java.lang.reflect.Field;
 public class Lib_FicheroSerializablePersonas {
 
     /**
-     * Crear un fichero serializable con objetos de tipo Persona
+     * Crear un fichero serializable con objetos de tipo Persona y devuelve
+     * una instancia File del mismo
      */
-    public static void crearFicheroSerializable(String nombreFichero) {
+    public static File crearFicheroSerializable(String nombreFichero) {
         //Definimos variable Persoa
         Persona amigo;
         //Declaramos o ficheiro.
@@ -47,7 +48,7 @@ public class Lib_FicheroSerializablePersonas {
         } catch (IOException e) {
             System.out.println("Se ha producido un error 1" + e.toString());
         }
-
+        return ficheiro;
     }
 
     /**
@@ -87,6 +88,10 @@ public class Lib_FicheroSerializablePersonas {
         Persona amigo;
         //Declaramos o ficheiro.Se non existe, créao. Se existe sobreescribe.
         File ficheiro = new File(nombreFichero);
+          
+        System.out.println("\n");
+        System.out.println("************************************************************");
+        System.out.println("SE MUESTRA DEL FICHERO SERIALIZADO DE OBJETO DE TIPO PERSONA");
         //Creamos un fluxo de entrada: ficheiro -> aplicación
         try (FileInputStream miFIS = new FileInputStream(ficheiro);
                 ObjectInputStream miOIS = new ObjectInputStream(miFIS);) {
@@ -96,7 +101,7 @@ public class Lib_FicheroSerializablePersonas {
                 System.out.println(miOIS.readObject().getClass().getCanonicalName());
 
                 //Visualizamos contido do ficheiro
-                System.out.println("Nome:" + amigo.getNome() + " Idade:" + amigo.getIdade());
+                System.out.println("Nombre:" + amigo.getNome() + " Edad:" + amigo.getIdade());
             }
         } catch (EOFException e) {
             System.out.println("Fin de fichero");
@@ -113,15 +118,14 @@ public class Lib_FicheroSerializablePersonas {
      * 
      * @param nombreFichero Tipo String Nombre del fichero a tratar
      */
-    static void mostrarDatosObjetoFicheroSerializable(String nombreFichero) {
+    static void mostrarDatosObjetoFicheroSerializable(File elFicheroObjetos) {
         //Declaramos o ficheiro.Se non existe, créao. Se existe sobreescribe.
-        File ficheiro = new File(nombreFichero);
-        //Creamos un fluxo de entrada: ficheiro -> aplicación
-        try (FileInputStream miFIS = new FileInputStream(ficheiro);
+
+        try (FileInputStream miFIS = new FileInputStream(elFicheroObjetos);
                 ObjectInputStream miOIS = new ObjectInputStream(miFIS);) {
             //Accedo a un objeto del fichero para conocer el tipo de objeto y sus propiedades
             Class _class = miOIS.readObject().getClass();
-            System.out.println("El fichero tiene objetos de tipo " + _class.getCanonicalName());
+            System.out.println("\nEl fichero tiene objetos de tipo " + _class.getCanonicalName());
             //Muestro las propiedades del objeto
             Field[] _propiedades = _class.getDeclaredFields();
             /*propiedades[i].getName --> obtenemos el nombre de la propiedad
@@ -132,7 +136,6 @@ public class Lib_FicheroSerializablePersonas {
                 System.out.println("\t" + campo);
             }
             System.out.println();
-            System.out.println("El fichero tiene objetos de tipo " + miOIS.readObject().getClass().getDeclaredFields().toString());
         } catch (EOFException e) {
             System.out.println("Fin de fichero");
         } catch (ClassNotFoundException | FileNotFoundException e) {
