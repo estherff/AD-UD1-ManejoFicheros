@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <alumnado>
-<alumno>
-<nombre>Xan</nombre>
-<edad>21</edad>
-</alumno>
-<alumno>
-<nombre>Pepe</nombre>
-<edad>22</edad>
-</alumno>
+ <alumno>
+  <nombre>Xan</nombre>
+  <edad>21</edad>
+ </alumno>
+ <alumno>
+  <nombre>Pepe</nombre>
+  <edad>22</edad>
+ </alumno>
 </alumnado>

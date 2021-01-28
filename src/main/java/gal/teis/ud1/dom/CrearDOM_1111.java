@@ -5,6 +5,7 @@
  */
 package gal.teis.ud1.dom;
 
+import static gal.teis.ud1.dom.CrearDOM_11111.tratarNodoRecursivo;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -281,7 +282,7 @@ public class CrearDOM_1111 {
          * existentes*********************
          */
         System.out.println("Acceso recursivo");
-        tratarNodoRecursivo(documento, "");
+        tratarNodoRecursivo(documento);
     }
 
     /**
@@ -291,33 +292,44 @@ public class CrearDOM_1111 {
      * @param ind Tipo String, determina la indentación de la salida por
      * pantalla
      */
-    public static void tratarNodoRecursivo(Node nodo, String ind) {
+    public static void tratarNodoRecursivo(Node nodo) {
         switch (nodo.getNodeType()) {
             case Node.DOCUMENT_NODE:
                 System.out.println("<xml version=\"1.0\">");
                 Document doc = (Document) nodo;
-                tratarNodoRecursivo(doc.getDocumentElement(), "");
+                tratarNodoRecursivo(doc.getDocumentElement());
                 break;
 
             case Node.ELEMENT_NODE:
-                String nombre = nodo.getNodeName();
-                System.out.print(ind + "<" + nombre);
-                NamedNodeMap ats = nodo.getAttributes();
-                for (int i = 0; i < ats.getLength(); i++) {
-                    tratarNodoRecursivo(ats.item(i), "");
+                Element elemento = (Element) nodo;
+                String nombre = elemento.getNodeName();
+                System.out.print("\t<" + nombre);
+                NamedNodeMap atributos = elemento.getAttributes();
+                if (atributos.getLength() != 0) {
+                    for (int i = 0; i < atributos.getLength(); i++) {
+                        tratarNodoRecursivo(atributos.item(i));
+                    }
                 }
                 System.out.println(">");
+
                 NodeList hijos = nodo.getChildNodes();
                 if (hijos != null) {
                     for (int i = 0; i < hijos.getLength(); i++) {
-                        tratarNodoRecursivo(hijos.item(i), ind + "   ");
+                        tratarNodoRecursivo(hijos.item(i));
                     }
                 }
-                System.out.println(ind + "</" + nombre + ">");
+                System.out.println("\t" + "</" + nombre + ">");
                 break;
+
+            case Node.ATTRIBUTE_NODE:
+                Attr atributo = (Attr) nodo;
+                System.out.print(" " + atributo.getNodeName()
+                        + " = " + atributo.getNodeValue());
+                break;
+                
             case Node.TEXT_NODE:
                 String texto = nodo.getTextContent();
-                System.out.println("        " + texto);
+                System.out.println("\t\t" + texto);
         }
     }
 

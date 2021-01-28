@@ -361,16 +361,15 @@ public class CrearDOM_11111 {
     static void recorrerDOM_ConociendoNiveles(Document documento) {
 
         System.out.println();
-        
+
         //Se muestra el elemento raíz del DOM
         System.out.println("Elemento raíz del documento XML: "
-                + documento.getDocumentElement().getNodeName()+"\n");
+                + documento.getDocumentElement().getNodeName() + "\n");
 
         //Obtenemos unha lista de nodos con nombre "persona" de todo el documento
         //NodeList listaPersonas = documento.getElementsByTagName(documento.getDocumentElement().getNodeName());
         //Obtenemos unha lista de nodos con nombre "persona" de todo el documento
         NodeList listaPersonas = documento.getElementsByTagName("persona");
-
 
         for (int i = 0; i < listaPersonas.getLength(); i++) {
             //Extraer un nodo de la lista para consultar sus hijos
@@ -378,12 +377,12 @@ public class CrearDOM_11111 {
 
             //Si el elemento que se ha extraido es tip NODE
             if (elNodo.getNodeType() == Node.ELEMENT_NODE) {
-                
+
                 Element elElement = (Element) elNodo;
-                
+
                 //Muestra la etiqueta del elemento 
                 System.out.println("Datos del elemento "
-                + elElement.getNodeName());
+                        + elElement.getNodeName());
 
                 if (elElement.hasAttributes()) {
                     NamedNodeMap miListaAtributos = elNodo.getAttributes();
@@ -438,13 +437,17 @@ public class CrearDOM_11111 {
                 break;
 
             case Node.ELEMENT_NODE:
-                String nombre = nodo.getNodeName();
+                Element elemento = (Element) nodo;
+                String nombre = elemento.getNodeName();
                 System.out.print("\t<" + nombre);
-                NamedNodeMap ats = nodo.getAttributes();
-                for (int i = 0; i < ats.getLength(); i++) {
-                    tratarNodoRecursivo(ats.item(i));
+                NamedNodeMap atributos = elemento.getAttributes();
+                if (atributos.getLength() != 0) {
+                    for (int i = 0; i < atributos.getLength(); i++) {
+                        tratarNodoRecursivo(atributos.item(i));
+                    }
                 }
                 System.out.println(">");
+
                 NodeList hijos = nodo.getChildNodes();
                 if (hijos != null) {
                     for (int i = 0; i < hijos.getLength(); i++) {
@@ -453,6 +456,13 @@ public class CrearDOM_11111 {
                 }
                 System.out.println("\t" + "</" + nombre + ">");
                 break;
+
+            case Node.ATTRIBUTE_NODE:
+                Attr atributo = (Attr) nodo;
+                System.out.print(" " + atributo.getNodeName()
+                        + " = " + atributo.getNodeValue());
+                break;
+                
             case Node.TEXT_NODE:
                 String texto = nodo.getTextContent();
                 System.out.println("\t\t" + texto);
