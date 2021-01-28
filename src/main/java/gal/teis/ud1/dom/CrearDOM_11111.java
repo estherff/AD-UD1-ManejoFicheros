@@ -464,8 +464,9 @@ public class CrearDOM_11111 {
                 break;
                 
             case Node.TEXT_NODE:
-                String texto = nodo.getTextContent();
-                System.out.println("\t\t" + texto);
+                Text texto = (Text) nodo;
+                String elTexto = texto.getTextContent();
+                System.out.println("\t\t" + elTexto);
         }
     }
 
