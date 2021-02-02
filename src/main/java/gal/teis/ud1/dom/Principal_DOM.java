@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  *
  * @version 1.2
  */
-public class CrearDOM_11111 {
+public class Principal_DOM {
 
     static Scanner sc = new Scanner(System.in);
 
@@ -150,7 +150,7 @@ public class CrearDOM_11111 {
                 }
             } while (!finalizar);
         } catch (ParserConfigurationException | TransformerException e) {
-            Logger.getLogger(CrearDOM_11111.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Principal_DOM.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             sc.close();
         }
@@ -222,7 +222,7 @@ public class CrearDOM_11111 {
             System.out.println("\n\n");
 
         } catch (IOException ex) {
-            Logger.getLogger(CrearDOM_11111.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Principal_DOM.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
