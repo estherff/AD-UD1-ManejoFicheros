@@ -44,8 +44,8 @@ import org.xml.sax.SAXException;
  * Se crea un fichero con objetos de tipo Persona. Se consultan datos del
  * fichero de objetos como el tipo de objeto y sus propiedades. Se crear un
  * árbol DOM a partir del ficehro de objetos de tipo Persona Se muestra el árbol
- * DOM por pantalla con métodos específicos.
- * Se recomienda probar la ejecución con las consultas de 
+ * DOM por pantalla con métodos específicos. Se recomienda probar la ejecución
+ * con las consultas de
  * https://www.mclibre.org/consultar/xml/lecciones/xml-xpath.html#xpath-que-es
  *
  * @author Esther Ferreiro
@@ -113,10 +113,20 @@ public class Principal_XPath {
             if (!consultaXPath.equals("0")) {
                 NodeList resultadoConsulta = (NodeList) laXPathExpression.evaluate(documento, XPathConstants.NODESET);
                 /*Recorremos el NodeList*/
-                for (int i = 0; i < resultadoConsulta.getLength(); i++) {
-                    //Extraer un nodo de la lista para consultar sus hijos
-                    Node elNodo = resultadoConsulta.item(i);
-                    tratarNodoRecursivo(elNodo);
+                if (resultadoConsulta.getLength() > 0) {
+                    System.out.println("El resultado de la consulta es:\n");
+                    for (int i = 0; i < resultadoConsulta.getLength(); i++) {
+                        //Extraer un nodo de la lista para consultar sus hijos
+                        Node elNodo = resultadoConsulta.item(i);
+                        tratarNodoRecursivo(elNodo);
+                        //Cuando son solo atributos que salte de´línea
+                        //p.e. /biblioteca/libro/autor/@fechaNacimiento
+                        if (elNodo.getNodeType() == Node.ATTRIBUTE_NODE) {
+                            System.out.println("");
+                        }
+                    }
+                } else {
+                    System.out.println("No hay resultados para esa consulta");
                 }
 
             }
@@ -244,6 +254,7 @@ public class Principal_XPath {
         System.out.println(bufO);
 
     }
+
     /**
      * Es llamado desde recorrerDOM_Recusivo para recorrer un árbol DOM y
      * mostrarlo por pantalla de forma recursiva a partir del elemento raíz
@@ -254,7 +265,6 @@ public class Principal_XPath {
     public static void tratarNodoRecursivo(Node nodo) {
         switch (nodo.getNodeType()) {
             case Node.DOCUMENT_NODE:
-                System.out.println("<xml version=\"1.0\">");
                 Document doc = (Document) nodo;
                 tratarNodoRecursivo(doc.getDocumentElement());
                 break;
@@ -262,15 +272,13 @@ public class Principal_XPath {
             case Node.ELEMENT_NODE:
                 Element elemento = (Element) nodo;
                 String nombre = elemento.getNodeName();
-                System.out.print("<" + nombre);
+                System.out.print(nombre);
                 NamedNodeMap atributos = elemento.getAttributes();
                 if (atributos.getLength() != 0) {
                     for (int i = 0; i < atributos.getLength(); i++) {
                         tratarNodoRecursivo(atributos.item(i));
                     }
                 }
-                System.out.println(">");
-
                 NodeList hijos = nodo.getChildNodes();
                 if (hijos != null) {
 
@@ -278,7 +286,9 @@ public class Principal_XPath {
                         tratarNodoRecursivo(hijos.item(i));
                     }
                 }
-                System.out.println("</" + nombre + ">");
+
+                System.out.println(nombre);
+
                 break;
 
             case Node.ATTRIBUTE_NODE:
@@ -286,7 +296,7 @@ public class Principal_XPath {
                 System.out.print(" " + atributo.getNodeName()
                         + " = " + atributo.getNodeValue());
                 break;
-                
+
             case Node.TEXT_NODE:
                 Text texto = (Text) nodo;
                 String elTexto = texto.getTextContent();
