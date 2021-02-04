@@ -80,7 +80,6 @@ public class Principal_DOM {
                             System.out.println("\n*********************************************************************************************************");
                             System.out.println("Debe ejecutar antes la opción 1 para poder crear su árbol DOM en memoria");
                             System.out.println("*********************************************************************************************************\n\n");
-
                         }
                         break;
 
@@ -95,7 +94,7 @@ public class Principal_DOM {
                                     getDOMImplementation().createDocument(null, "personas", null);
                             documento.setXmlVersion("1.0");//Asignar la versión de XML 
 
-                            /*Crea un documento DOM a partir de un fichero de objetos*/
+                            /*Crea los elementos del documento DOM a partir de un fichero de objetos para el elemento raíz "personas"*/
                             crearElementoOfFicheroSerializable(documento, elFicheroObjetos);
 
                         } else {
@@ -124,7 +123,8 @@ public class Principal_DOM {
 
                         if (!Objects.isNull(documento)) {
 
-                            System.out.println("\n************************************\nSE CREA UN FICHERO XML A PARTIR DEL DOM existente en memoria\n");
+                            System.out.println("\n************************************\nSE CREA UN FICHERO XML A PARTIR DEL DOM EXISTENTE EN MEMORIA\n"
+                                    + "Y SE MUESTRA LA INFORMACIÓN QUE CONTIENE MEDIANTE UN FLUJO DE CARACTERES");
                             System.out.println("Introduzca el nombre del fichero *.xml que contendrá el fichero XML con los datos de la clase Persona...");
                             nombreFichero = ControlData.lerString(sc);
                             crearFicheroXML(documento, nombreFichero + ".xml");
@@ -139,17 +139,22 @@ public class Principal_DOM {
                         break;
 
                     case 6:
-                        /*Recorre el árbol DOM conociendo los tags/etiquetas de los elementos*/
+                        System.out.println("\n************************************\n"
+                                + "SE RECORRE EL ÁRBOL DOM CONOCIENDO LOS TAG/ETIQUETAS DE LOS ELEMENTO\n");
                         if (!Objects.isNull(documento)) {
                             recorrerDOM_ConociendoEtiquetas(documento);
                         }
                         break;
                     case 7:
+                        System.out.println("\n************************************\n"
+                                + "SE RECORRE EL ÁRBOL DOM CONOCIENDO LOS NIVELES DEL ÁRBOL\n");
                         if (!Objects.isNull(documento)) {
                             recorrerDOM_ConociendoNiveles(documento);
                         }
                         break;
                     case 8:
+                        System.out.println("\n************************************\n"
+                                + "SE RECORRE EL ÁRBOL DOM DE FORMA RECURSIVA SIN CONOCER ETIQUETAS NI NIVELES\n");
                         if (!Objects.isNull(documento)) {
                             recorrerDOM_Recursivo(documento);
                         }
@@ -179,7 +184,7 @@ public class Principal_DOM {
                 {
                     add("Crear un fichero secuencial de objetos de tipo Persona");
                     add("Mostrar los datos de los objetos (nombre de la clase y propiedades) del fichero Persona");
-                    add("Crear el arbol DOM a partir de del fichero de objetos Persona");
+                    add("Crear el arbol DOM a partir del fichero de objetos Persona");
                     add("Mostrar el contenido del árbol DOM en pantalla en formato XML");
                     add("Crear un fichero XML a partir del DOM creado anteriormente ");
                     add("Recorrer el árbol DOM conociendo los tags/etiquetas de los elementos");
