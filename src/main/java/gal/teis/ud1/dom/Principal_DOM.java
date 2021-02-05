@@ -161,6 +161,7 @@ public class Principal_DOM {
                         break;
                     case 9:
                         System.out.println("Hasta luego!!!");
+                        finalizar=true;
                 }
             } while (!finalizar);
         } catch (ParserConfigurationException | TransformerException e) {
