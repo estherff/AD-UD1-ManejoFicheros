@@ -10,11 +10,12 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
-    <name>AAA_AD-UD1-ManexoFicheiros</name>
+    <name>AD-UD1-ManexoFicheiros</name>
+    
     <repositories>
         <repository>
-            <id>mi-repositorio</id>
-            <url>file://D:/IES/6_Teis/Proxectos_AD-PGR/REPOSITORIO_NETBEANS</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
     <dependencies>
