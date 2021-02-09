@@ -138,8 +138,9 @@ public class Principal_XPath {
 
     /**
      * Devuelve en array de File con aquellos ficheros que coincidan con las
-     * extensiones que se pasan por parámetro. Por ejemplo: listFileByExtension*
-     * ("C:\\ficheros\\", ".xml", ".java"); devolverá un File[] con los ficheros
+     * extensiones que se pasan por parámetro. Por ejemplo: 
+     * listarFicherosByExtension ("C:\\ficheros\\", ".xml", ".java"); 
+     * devolverá un File[] con los ficheros
      * de C:\Ficheros que tengan extensión xml o java.
      *
      * @param filePath path de la carpeta para listar archivos
@@ -194,9 +195,9 @@ public class Principal_XPath {
         /*
         List es una clase abstracta de la cual hereda ArrayList. Se tiene que 
         crear una instancia de List pues queremos convertir un array de Files a ArrayList
-        y el metodo que nos permite hacer esta operación, Arrays.asList, devuleve una instancia List
+        y el metodo que nos permite hacer esta operación, Arrays.asList, devuelve una instancia List
          */
-        List<File> losFicherosObjetos = new ArrayList<File>();
+        List<File> losFicherosObjetos;
 
         ArrayList<String> losFicheros = new ArrayList<String>();
 
@@ -206,7 +207,6 @@ public class Principal_XPath {
         lista de File (List<File>) que 
          */
         losFicherosObjetos = Arrays.asList(listarFicherosByExtension(".", "xml"));
-
         for (int i = 0; i < losFicherosObjetos.size(); i++) {
             losFicheros.add(losFicherosObjetos.get(i).getName());
         }
