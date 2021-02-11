@@ -16,7 +16,8 @@ package gal.teis.ud1.dom;
 
 
 import gal.teis.ControlData;
-import gal.teis.Menu;
+import gal.teis.libreriadam.Menu;
+import gal.teis.excepciones.NumeroFueraRangoException;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -177,7 +178,7 @@ public class Principal_DOM {
      * Dibuja un menú en la consola a partir con unas opciones determinadas
      */
     static byte pintarMenu() {
-        byte opcion;
+        byte opcion = 0;
         boolean correcta;
         System.out.println("\n\n*******************************************************************************************************");
         /* Solo sale del While cuando se selecciona una opción correcta en rango y tipo*/
@@ -202,8 +203,14 @@ public class Principal_DOM {
             miMenu.printMenu();
 
             /*La clase ControlData permite hacer un control de tipo leído*/
-            opcion = ControlData.lerByte(sc);
-            correcta = miMenu.rango(opcion);
+            try{
+                opcion = ControlData.lerByte(sc);
+                miMenu.rango(opcion);
+                correcta = true;
+            }catch (NumeroFueraRangoException e){
+                System.out.println(e.getMessage());
+                correcta = false;
+            }
 
         } while (!correcta);
 
