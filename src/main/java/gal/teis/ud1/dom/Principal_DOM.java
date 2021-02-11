@@ -205,9 +205,11 @@ public class Principal_DOM {
             /*La clase ControlData permite hacer un control de tipo leído*/
             try{
                 opcion = ControlData.lerByte(sc);
+                /*miMenu.rango() lanza una excepción propia en el caso de que 
+                el parámetro opcion esté fuera del rango posible */
                 miMenu.rango(opcion);
                 correcta = true;
-            }catch (NumeroFueraRangoException e){
+            }catch (NumeroFueraRangoException e){//Excepción personalizada
                 System.out.println(e.getMessage());
                 correcta = false;
             }

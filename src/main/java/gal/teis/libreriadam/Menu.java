@@ -44,7 +44,8 @@ public class Menu {
 
     /**
      * Comproba que o parámetro está dentro do rango de opcións coas que se 
-     * creou o menú
+     * creou o menú. Lanza unha excepción propia no caso de que o nº non estea 
+     * dentro do rango das opcións posibles.
      *
      * @param op int - valor a analizar como pertencente ou non ao rango de
      * opcións do menú
