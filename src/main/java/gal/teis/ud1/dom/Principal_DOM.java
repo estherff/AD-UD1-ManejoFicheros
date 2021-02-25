@@ -24,8 +24,6 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -51,10 +49,12 @@ public class Principal_DOM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
         Document documento = null; //para manejar el DOM
-        String nombreFichero = ""; //para alamcenar el nombre del fichero xml
-        boolean finalizar = false; //para controlar la salida del programa
+        String nombreFichero = ""; //para alamcenar el nombre del fichero xml   
         File elFicheroObjetos = null; //para almacenar la instancia del fichero serializado de objetos
+        
+        boolean finalizar = false; //para controlar la salida del programa
         Scanner sc = new Scanner(System.in); //creo una instancia de la clase Scanner para la introdución de datos por teclado
 
         try {

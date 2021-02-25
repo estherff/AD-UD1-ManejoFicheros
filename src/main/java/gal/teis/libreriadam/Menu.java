@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * @author Esther Ferreiro Imprime en pantalla un menú a partir dun ArrayList de
+ * @author Esther Ferreiro 
+ * Imprime en pantalla un menú a partir dun ArrayList de
  * String que conten as opcións do menú. Permite facer un control de rango da
  * opción del menú que se introduce
  */
@@ -51,12 +52,13 @@ public class Menu {
      * opcións do menú
      * @return boolean - true se está no rango e false en caso contrario
      */
-    public void rango(byte op) throws NumeroFueraRangoException {
+    public boolean rango(byte op) throws NumeroFueraRangoException {
         boolean enrango = true;
         if (op < 1 || op > numOpciones) {
             enrango = false;
             throw new NumeroFueraRangoException(1,numOpciones);
         }
+        return enrango;
     }
     /**
      * Lee un n´º por teclado ata que se introduce un nº correcto para o

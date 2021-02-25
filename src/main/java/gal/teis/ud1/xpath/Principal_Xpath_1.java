@@ -14,21 +14,16 @@
  */
 package gal.teis.ud1.xpath;
 
-import gal.teis.ud1.dom.*;
-import gal.teis.ControlData;
-import gal.teis.Menu;
+import gal.teis.libreriadam.*;
+import gal.teis.excepciones.*;
+import static gal.teis.ud1.xpath.Principal_XPath.sc;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.*;
-import javax.xml.transform.stream.*;
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -129,7 +124,6 @@ public class Principal_Xpath_1 {
                     System.out.println("No hay resultados para esa consulta");
                 }
 
-            
             }
         } while (!consultaXPath.equals("0"));
 
@@ -190,8 +184,9 @@ public class Principal_Xpath_1 {
     }
 
     public static String seleccionarFicheroXML() {
-        byte numFichero;
-        boolean numFicheroCorrecto;
+        byte numFichero = 0;
+         String cadenaOpcion ="";
+        boolean numFicheroCorrecto = false;
         /*
         List es una clase abstracta de la cual hereda ArrayList. Se tiene que 
         crear una instancia de List pues queremos convertir un array de Files a ArrayList
@@ -218,10 +213,16 @@ public class Principal_Xpath_1 {
         miMenu.printMenu();
         System.out.println("Introduzca el nº del fichero para realizar consultas XPath");
 
-        do {
-            /*La clase ControlData permite hacer un control de tipo leído*/
-            numFichero = ControlData.lerByte(sc);
-            numFicheroCorrecto = miMenu.rango(numFichero);
+       do {
+            try {
+                /*La clase ControlData permite hacer un control de tipo leído*/
+                cadenaOpcion = sc.nextLine();
+                numFichero = ControlData.lerByte(cadenaOpcion);
+                
+                miMenu.rango(numFichero);
+            } catch (TipoNotByteException | NumeroFueraRangoException ex) {
+                System.out.println(ex.getMessage());
+            }
         } while (!numFicheroCorrecto);
 
         System.out.println("Ha seleccionado el fichero " + losFicherosObjetos.get(numFichero - 1).getName());
@@ -283,8 +284,8 @@ public class Principal_Xpath_1 {
                 }
 
                 NodeList hijos = nodo.getChildNodes();
-               
-                if (hijos.getLength()>0) {
+
+                if (hijos.getLength() > 0) {
                     System.out.println(">");
                     if (hijos != null) {
 
@@ -295,7 +296,7 @@ public class Principal_Xpath_1 {
 
                     System.out.println("");
                     System.out.println("</" + nombre + ">");
-                }else{
+                } else {
                     System.out.println("/>");
                 }
                 break;

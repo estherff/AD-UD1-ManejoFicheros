@@ -14,24 +14,16 @@
  */
 package gal.teis.ud1.xpath;
 
-import gal.teis.ud1.dom.*;
-import gal.teis.ControlData;
-import gal.teis.Menu;
+import gal.teis.libreriadam.*;
+import gal.teis.excepciones.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.*;
-import javax.xml.transform.stream.*;
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
@@ -190,8 +182,9 @@ public class Principal_XPath {
     }
 
     public static String seleccionarFicheroXML() {
-        byte numFichero;
-        boolean numFicheroCorrecto;
+        byte numFichero = 0;
+        String cadenaOpcion ="";
+        boolean numFicheroCorrecto = false;
         /*
         List es una clase abstracta de la cual hereda ArrayList. Se tiene que 
         crear una instancia de List pues queremos convertir un array de Files a ArrayList
@@ -199,7 +192,7 @@ public class Principal_XPath {
          */
         List<File> losFicherosObjetos;
 
-        ArrayList<String> losFicheros = new ArrayList<String>();
+        ArrayList<String> losFicheros = new ArrayList<>();
 
         /* LLamo al método listarFicherosByExtension para que me muestre los fichero con 
         extensión xml que hay en la carpeta del proyecto actual.
@@ -218,9 +211,15 @@ public class Principal_XPath {
         System.out.println("Introduzca el nº del fichero para realizar consultas XPath");
 
         do {
-            /*La clase ControlData permite hacer un control de tipo leído*/
-            numFichero = ControlData.lerByte(sc);
-            numFicheroCorrecto = miMenu.rango(numFichero);
+            try {
+                /*La clase ControlData permite hacer un control de tipo leído*/
+                cadenaOpcion = sc.nextLine();
+                numFichero = ControlData.lerByte(cadenaOpcion);
+                
+                miMenu.rango(numFichero);
+            } catch (TipoNotByteException | NumeroFueraRangoException ex) {
+                System.out.println(ex.getMessage());
+            }
         } while (!numFicheroCorrecto);
 
         System.out.println("Ha seleccionado el fichero " + losFicherosObjetos.get(numFichero - 1).getName());

@@ -14,7 +14,6 @@
  */
 package gal.teis.ud1.dom;
 
-import gal.teis.ud1.Serializable.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;

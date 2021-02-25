@@ -10,7 +10,6 @@ package gal.teis.ud1.FlujoBinario;
  * @author Esther Ferreiro
  */
 import java.io.IOException;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
