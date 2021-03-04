@@ -14,7 +14,6 @@
  */
 package gal.teis.ud1.dom;
 
-
 import gal.teis.ControlData;
 import gal.teis.libreriadam.Menu;
 import gal.teis.excepciones.NumeroFueraRangoException;
@@ -49,11 +48,11 @@ public class Principal_DOM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
         Document documento = null; //para manejar el DOM
         String nombreFichero = ""; //para alamcenar el nombre del fichero xml   
         File elFicheroObjetos = null; //para almacenar la instancia del fichero serializado de objetos
-        
+
         boolean finalizar = false; //para controlar la salida del programa
         Scanner sc = new Scanner(System.in); //creo una instancia de la clase Scanner para la introdución de datos por teclado
 
@@ -163,7 +162,7 @@ public class Principal_DOM {
                         break;
                     case 9:
                         System.out.println("Hasta luego!!!");
-                        finalizar=true;
+                        finalizar = true;
                 }
             } while (!finalizar);
         } catch (ParserConfigurationException | TransformerException e) {
@@ -182,34 +181,34 @@ public class Principal_DOM {
         boolean correcta;
         System.out.println("\n\n*******************************************************************************************************");
         /* Solo sale del While cuando se selecciona una opción correcta en rango y tipo*/
-        do {
-            ArrayList<String> misOpciones = new ArrayList<String>() {
-                {
-                    add("Crear un fichero secuencial de objetos de tipo Persona");
-                    add("Mostrar los datos de los objetos (nombre de la clase y propiedades) del fichero Persona");
-                    add("Crear el arbol DOM a partir del fichero de objetos Persona");
-                    add("Mostrar el contenido del árbol DOM en pantalla en formato XML");
-                    add("Crear un fichero XML a partir del DOM creado anteriormente ");
-                    add("Recorrer el árbol DOM conociendo los tags/etiquetas de los elementos");
-                    add("Recorrer el árbol DOM conociendo sin conocer los tags/etiquetas de los elementos, pero sí los niveles");
-                    add("Recorrer el árbol DOM conociendo sin conocer nada de la estructura del mismo. Método recursivo");
-                    add("Finalizar");
-                }
-            };
-
-            /*La clase Menu permite imprimir el menú a partir de los datos de un ArrayList<String>
+        ArrayList<String> misOpciones = new ArrayList<String>() {
+            {
+                add("Crear un fichero secuencial de objetos de tipo Persona");
+                add("Mostrar los datos de los objetos (nombre de la clase y propiedades) del fichero Persona");
+                add("Crear el arbol DOM a partir del fichero de objetos Persona");
+                add("Mostrar el contenido del árbol DOM en pantalla en formato XML");
+                add("Crear un fichero XML a partir del DOM creado anteriormente ");
+                add("Recorrer el árbol DOM conociendo los tags/etiquetas de los elementos");
+                add("Recorrer el árbol DOM conociendo sin conocer los tags/etiquetas de los elementos, pero sí los niveles");
+                add("Recorrer el árbol DOM conociendo sin conocer nada de la estructura del mismo. Método recursivo");
+                add("Finalizar");
+            }
+        };
+        /*La clase Menu permite imprimir el menú a partir de los datos de un ArrayList<String>
             y utilizar métodos para control de rango*/
-            Menu miMenu = new Menu(misOpciones);
+        Menu miMenu = new Menu(misOpciones);
+        do {
+
             miMenu.printMenu();
 
             /*La clase ControlData permite hacer un control de tipo leído*/
-            try{
+            try {
                 opcion = ControlData.lerByte(sc);
                 /*miMenu.rango() lanza una excepción propia en el caso de que 
                 el parámetro opcion esté fuera del rango posible */
                 miMenu.rango(opcion);
                 correcta = true;
-            }catch (NumeroFueraRangoException e){//Excepción personalizada
+            } catch (NumeroFueraRangoException e) {//Excepción personalizada
                 System.out.println(e.getMessage());
                 correcta = false;
             }
@@ -487,7 +486,7 @@ public class Principal_DOM {
                 System.out.print(" " + atributo.getNodeName()
                         + " = " + atributo.getNodeValue());
                 break;
-                
+
             case Node.TEXT_NODE:
                 Text texto = (Text) nodo;
                 String elTexto = texto.getTextContent();
