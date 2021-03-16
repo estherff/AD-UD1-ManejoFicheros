@@ -62,7 +62,7 @@ public class Principal_DOM {
                     case 1:
 
                         System.out.println("\n***************************************************n"
-                                + "SE CREA UN FICHERO SECUENCIAL DE OJETOS DE LA CLASE PERSONA");
+                                + "SE CREA UN FICHERO SECUENCIAL DE OBJETOS DE LA CLASE PERSONA");
                         System.out.println("Introduzca el nombre del fichero  *.dat que contendrá los objetos de tipo Persona.....");
                         nombreFichero = ControlData.lerString(sc);
                         elFicheroObjetos = Lib_FicheroSerializablePersonas.crearFicheroSerializable(nombreFichero + ".dat");
@@ -166,7 +166,7 @@ public class Principal_DOM {
                 }
             } while (!finalizar);
         } catch (ParserConfigurationException | TransformerException e) {
-            Logger.getLogger(Principal_DOM.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println(e.getMessage());
         } finally {
             sc.close();
         }
@@ -246,7 +246,7 @@ public class Principal_DOM {
             System.out.println("\n\n");
 
         } catch (IOException ex) {
-            Logger.getLogger(Principal_DOM.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
 
