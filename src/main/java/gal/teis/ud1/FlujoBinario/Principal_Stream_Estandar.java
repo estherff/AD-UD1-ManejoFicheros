@@ -16,8 +16,11 @@
 package gal.teis.ud1.FlujoBinario;
 
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import java.io.PrintStream;
 
@@ -32,11 +35,15 @@ public class Principal_Stream_Estandar {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //lecturaTecladoFlujoBinario();
-        //dirigirErroresAFichero();
+        
+        lecturaTecladoFlujoBinario();
+        dirigirErroresAFichero();
         dirigirErroresAFichero_Modificado();
     }
 
+    /**
+     * 
+     */
     static void lecturaTecladoFlujoBinario() {
         int c;
         int contador = 0;
@@ -51,32 +58,7 @@ public class Principal_Stream_Estandar {
             e.printStackTrace();
         }
     }
-    static void flujoEstandarEntradaFichero() {
-//        try {
-//            //Crear dos flujos de salida hacia sendos ficheros
-//            InputStream fout = new FileInputStream("stdout.log");
-//           
-//            //Crar dos objetos PrintStrema con los flujos de salida creados
-//            PrintStream miOut = new PrintStream(fout);
-//            PrintStream miErr = new PrintStream(ferr);
-//            //Dar valor a las propiedades out y err de System que conforman
-//            //los flujos de salida estándar y de error
-//            System.setOut(miOut);
-//            System.setErr(miErr);
-//            //Envío un string al flujo de salida estándar mediante el objeto creado
-//            miOut.println("trace console 1");
-//            //Envío un string al flujo de salida estándar que está modificado
-//            //ya que out tiene el valor de miOut (System.setOut(miOut);)
-//            System.out.println("trace console 2");
-//            //Provoco una excepción que será capturada por catch
-//            int a = 100 / 0;
-//        } catch (Exception ex) {
-//            //Envío el valor de la excepción a System.err cuyo destino del flujo
-//            //está modificado
-//            System.err.println(ex.toString());
-//        }
     
-    }
 
     static void dirigirErroresAFichero() {
         try {
